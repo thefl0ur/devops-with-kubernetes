@@ -4,4 +4,8 @@
 
 ## Execrises
 
-None so far...
+Each exercise had release and a tag that matches the exercise number.
+
+### Chapter 2
+
+[1.1. Getting started](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.1)
