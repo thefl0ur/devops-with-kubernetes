@@ -15,3 +15,5 @@ Each exercise had release and a tag that matches the exercise number.
 [1.3. Declarative approach](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.3)
 
 [1.4. The project, step 2](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.4)
+
+[1.5. The project, step 3](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.5)

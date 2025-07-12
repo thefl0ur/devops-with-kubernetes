@@ -26,3 +26,9 @@ or
 ```bash
 kubectl logs -f deployments/project
 ```
+
+Port forwarding
+
+```bash
+kubectl port-forward project--<some-uuid> <local_port>:<internal_port>
+```
