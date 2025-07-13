@@ -1,10 +1,9 @@
-using System.Threading;
+var builder = WebApplication.CreateBuilder(args);
 
-Guid guid = Guid.NewGuid();
-TimeSpan timeout = new TimeSpan(0, 0, 5);
+builder.Services.AddSingleton<HashService>();
+builder.Services.AddHostedService(x => x.GetRequiredService<HashService>());
+var app = builder.Build();
 
-while (true) {
-    Console.WriteLine($"{DateTime.Now}: {guid}");
-    Thread.Sleep(timeout);
-}
+app.MapGet("/", (HashService hashService) => Results.Ok(hashService.LastEntry));
 
+app.Run();

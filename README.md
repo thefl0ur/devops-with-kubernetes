@@ -19,3 +19,5 @@ Each exercise had release and a tag that matches the exercise number.
 [1.5. The project, step 3](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.5)
 
 [1.6. The project, step 4](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.6)
+
+[1.7. External access with Ingress](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.7)
