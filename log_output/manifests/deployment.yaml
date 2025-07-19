@@ -12,6 +12,17 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+      - name: shared-folder
+        emptyDir: {}
       containers:
         - name: log-output
-          image: azska/log_output:latest
+          image: azska/log_output_server:latest
+          volumeMounts:
+          - name: shared-folder
+            mountPath: /tmp/
+        - name: log-generator
+          image: azska/log_output_generator:latest
+          volumeMounts:
+          - name: shared-folder
+            mountPath: /tmp/
