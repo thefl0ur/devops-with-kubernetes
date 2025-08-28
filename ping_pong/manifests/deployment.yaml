@@ -12,6 +12,13 @@ spec:
       labels:
         app: ping-pong
     spec:
+      volumes:
+      - name: shared-folder
+        persistentVolumeClaim:
+            claimName: ping-pong-pvc
       containers:
         - name: ping-pong
           image: azska/ping_pong:latest
+          volumeMounts:
+          - name: shared-folder
+            mountPath: /tmp/

@@ -14,7 +14,8 @@ spec:
     spec:
       volumes:
       - name: shared-folder
-        emptyDir: {}
+        persistentVolumeClaim:
+            claimName: ping-pong-pvc
       containers:
         - name: log-output
           image: azska/log_output_server:latest

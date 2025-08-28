@@ -4,8 +4,10 @@ type CounterService struct {
 	counter int64
 }
 
-func NewCounterService() *CounterService {
-	return &CounterService{}
+func NewCounterService(initital int64) *CounterService {
+	c := &CounterService{}
+	c.counter = initital
+	return c
 }
 
 func (c *CounterService) Increment() {

@@ -7,5 +7,6 @@ import (
 type (
 	Handler struct {
 		CounterService *services.CounterService
+		WriterService  *services.WriterService
 	}
 )

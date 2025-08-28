@@ -27,3 +27,5 @@ Each exercise had release and a tag that matches the exercise number.
 [1.9. More services](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.9)
 
 [1.10. Even more services](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.10)
+
+[1.11. Persisting data](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.11)

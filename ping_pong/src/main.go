@@ -31,9 +31,29 @@ func GetPort() int {
 	return port
 }
 
+func LoadInitialValue() int64 {
+	sharedFilePath := os.Getenv("SHARED_FILE_PATH")
+	data, err := os.ReadFile(sharedFilePath)
+	if err != nil {
+		return 0
+	}
+
+	value, err := strconv.ParseInt(string(data), 10, 0)
+	if err != nil {
+		return 0
+	}
+
+	return value
+}
+
 func main() {
-	counter := services.CounterService{}
-	h := &handlers.Handler{CounterService: &counter}
+	counter := services.NewCounterService(LoadInitialValue())
+	writer := services.NewWriterService(os.Getenv("SHARED_FILE_PATH"))
+
+	h := &handlers.Handler{
+		CounterService: counter,
+		WriterService:  writer,
+	}
 	e := echo.New()
 
 	e.GET("/pingpong", h.Home)
