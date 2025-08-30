@@ -1,13 +1,39 @@
 <html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"/>
+        <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet"/>
+        <link rel="icon" href="{{ url_for('static', path='/favicon.svg') }}"/>
+    </head>
     <body>
-        <p>
-            <h1>DVK ToDo app</h1>
-        </p>
-        <img 
-            src="{{ url_for('static', path=image_url) ~ ('?uuid=' ~ uuid|urlencode) }}"
-            alt="Embedded Image"
-            width="500"
-            height="500"
-        />
+        <h1 class="head">ToDo App</h1>
+        <div class="container">
+            <div class="item">
+                <img 
+                    src="{{ url_for('data', path=image_url) ~ ('?uuid=' ~ uuid|urlencode) }}"
+                    alt="Embedded Image"
+                    width="500"
+                    height="500"
+                />
+            </div>
+
+            <div class="item">
+                <form>
+                    <input type="text" maxlength="140">
+                    <button>Create todo item</button>
+                </form>
+                <div>
+                    <ul>
+                        {% for todo in todos %}
+                            <li>
+                                {{todo}}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     <body>
+    <footer>
+        <a href="https://courses.mooc.fi/org/uh-cs/courses/devops-with-kubernetes">DevOps with Kubernetes</a>
+    </footer>
 </html>

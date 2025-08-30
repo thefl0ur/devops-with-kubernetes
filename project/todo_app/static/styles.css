@@ -1,0 +1,12 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.item {
+    padding:1rem
+}
+
+.head {
+    margin: auto;
+}

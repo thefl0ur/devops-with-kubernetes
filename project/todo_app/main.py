@@ -22,7 +22,8 @@ app = FastAPI(
     name="TodoApp", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan
 )
 app.include_router(router)
-app.mount("/static", StaticFiles(directory=IMAGE_CACHE_DIR), name="static")
+app.mount("/static", StaticFiles(directory="todo_app/static"), name="static")
+app.mount("/data", StaticFiles(directory=IMAGE_CACHE_DIR), name="data")
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", DEFAULT_PORT))
