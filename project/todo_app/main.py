@@ -1,35 +1,30 @@
 import os
+from contextlib import asynccontextmanager
 
-from fastapi.responses import HTMLResponse
 import uvicorn
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
-from fastapi import FastAPI, Request
-
+from todo_app.config import IMAGE_CACHE_DIR
+from todo_app.routes import router
+from todo_app.tasks import update_image
 
 DEFAULT_PORT = 8000
 
-app = FastAPI(name='TodoApp', docs_url=None, redoc_url=None, openapi_url=None)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await update_image()
+    yield
 
 
-@app.get('/', response_class=HTMLResponse)
-async def root(request: Request):
-    return """
-    <html>
-    <body>
-    <p><h1>DVK ToDO app</h1></p>
-    <body>
-    </html>
-"""
+app = FastAPI(
+    name="TodoApp", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan
+)
+app.include_router(router)
+app.mount("/static", StaticFiles(directory=IMAGE_CACHE_DIR), name="static")
 
-
-def start(port: int) -> None:
-    print(f'Server started in port {port}')
-    uvicorn.run(app, host='0.0.0.0', port=port)
-
-
-def get_port() -> int:
-    return int(os.getenv('PORT', DEFAULT_PORT))
-
-
-if __name__ == '__main__':
-    start(get_port())
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", DEFAULT_PORT))
+    print(f"Server started in port {port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)

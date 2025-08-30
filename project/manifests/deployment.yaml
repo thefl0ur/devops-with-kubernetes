@@ -12,6 +12,13 @@ spec:
       labels:
         app: todo-app
     spec:
+      volumes:
+      - name: cache-folder
+        persistentVolumeClaim:
+            claimName: todo-app-pvc
       containers:
         - name: todo-app
           image: azska/dvk_project
+          volumeMounts:
+          - name: cache-folder
+            mountPath: /tmp/todo_app_images/

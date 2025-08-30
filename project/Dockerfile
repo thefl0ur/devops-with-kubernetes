@@ -9,10 +9,10 @@ COPY uv.lock .
 
 RUN uv sync --locked
 
-ADD ./todo_app/ .
+ADD ./todo_app/ ./todo_app/
 
 EXPOSE ${PORT}
 
 ENV PORT=${PORT}
 
-CMD ["uv", "run", "main.py"]
+CMD ["uv", "run", "-m", "todo_app.main"]

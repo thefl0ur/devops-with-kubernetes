@@ -32,3 +32,8 @@ Port forwarding
 ```bash
 kubectl port-forward project--<some-uuid> <local_port>:<internal_port>
 ```
+
+Create forlder used as pv
+```
+docker exec k3d-k3s-default-agent-0 mkdir -p /tmp/todo_app/
+```

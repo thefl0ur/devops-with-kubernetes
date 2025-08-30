@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <p>
+            <h1>DVK ToDo app</h1>
+        </p>
+        <img 
+            src="{{ url_for('static', path=image_url) ~ ('?uuid=' ~ uuid|urlencode) }}"
+            alt="Embedded Image"
+            width="500"
+            height="500"
+        />
+    <body>
+</html>
