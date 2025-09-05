@@ -1,14 +1,20 @@
 var builder = WebApplication.CreateBuilder(args);
+string url = "http://ping-pong-service:3456";
+builder.Services.AddHttpClient<PingPongClient>(client =>
+{
+    client.BaseAddress = new Uri(url);
+});
+
 var app = builder.Build();
 
 string filePath = "/tmp/share.md";
-string? pingPath = System.Environment.GetEnvironmentVariable("PING_SHARED_FILE");
 
-app.MapGet("/", () => {
+app.MapGet("/", async (PingPongClient pingPongClient) => {
+    string pingpongCount = await pingPongClient.GetPings();
     string result =
         File.ReadAllText(filePath) +
         System.Environment.NewLine +
-        $"Ping / Pongs: {(pingPath != null ? File.ReadAllText(pingPath) : "0")}";
+        $"Ping / Pongs: {pingpongCount}";
 
     return Results.Text(result);
 });

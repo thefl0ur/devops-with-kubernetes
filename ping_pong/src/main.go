@@ -50,13 +50,15 @@ func main() {
 	counter := services.NewCounterService(LoadInitialValue())
 	writer := services.NewWriterService(os.Getenv("SHARED_FILE_PATH"))
 
-	h := &handlers.Handler{
+	pingpongHandler := &handlers.PingpongHandler{
 		CounterService: counter,
 		WriterService:  writer,
 	}
+	pingsHandler := &handlers.PingsHandler{CounterService: counter}
 	e := echo.New()
 
-	e.GET("/pingpong", h.Home)
+	e.GET("/pingpong", pingpongHandler.Index)
+	e.GET("/pings", pingsHandler.Index)
 
 	if err := e.Start(fmt.Sprintf(":%d", GetPort())); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		slog.Error("failed to start server", "error", err)

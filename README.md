@@ -33,3 +33,5 @@ Each exercise had release and a tag that matches the exercise number.
 [1.12. The project, step 6](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.12)
 
 [1.13. The project, step 7](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/1.13)
+
+[2.1. Connecting pods](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/2.1)

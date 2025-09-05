@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h *Handler) Home(c echo.Context) (err error) {
+func (h *PingpongHandler) Index(c echo.Context) (err error) {
 	counter := h.CounterService
 	counter.Increment()
 	count := counter.GetCount()

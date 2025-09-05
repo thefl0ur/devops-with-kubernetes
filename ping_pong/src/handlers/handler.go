@@ -5,8 +5,14 @@ import (
 )
 
 type (
-	Handler struct {
+	PingpongHandler struct {
 		CounterService *services.CounterService
 		WriterService  *services.WriterService
+	}
+)
+
+type (
+	PingsHandler struct {
+		CounterService *services.CounterService
 	}
 )
