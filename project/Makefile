@@ -1,14 +1,16 @@
 include .env
 
-all: build tag publish
+IMAGES ?= frontend backend
 
-build:
-	docker build $(build_args) -t $(IMAGE)  .
+all: $(IMAGES:%=publish-%)
 
-tag:
-	docker tag $(IMAGE) $(IMAGE):$(VERSION)
-	docker tag $(IMAGE) $(IMAGE):latest
+build-%:
+	docker build -f Dockerfile.$* $(build_args) -t $(IMAGE)_$* .
 
-publish:
-	docker push $(IMAGE):$(VERSION)
-	docker push $(IMAGE):latest
+tag-%:
+	docker tag $(IMAGE)_$* $(IMAGE)_$*:$(VERSION)
+	docker tag $(IMAGE)_$* $(IMAGE)_$*:latest
+
+publish-%: build-% tag-%
+	docker push $(IMAGE)_$*:$(VERSION)
+	docker push $(IMAGE)_$*:latest

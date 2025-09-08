@@ -9,7 +9,7 @@ from todo_app.config import IMAGE_CACHE_DIR
 from todo_app.routes import router
 from todo_app.tasks import update_image
 
-DEFAULT_PORT = 8000
+DEFAULT_PORT = 8001
 
 
 @asynccontextmanager

@@ -1,0 +1,18 @@
+FROM ghcr.io/astral-sh/uv:python3.13-alpine
+
+ARG PORT=8001
+
+WORKDIR /app
+
+COPY pyproject.toml .
+COPY uv.lock .
+
+RUN uv sync --locked
+
+ADD ./todo_backend/ ./todo_backend/
+
+EXPOSE ${PORT}
+
+ENV PORT=${PORT}
+
+CMD ["uv", "run", "-m", "todo_backend.main"]

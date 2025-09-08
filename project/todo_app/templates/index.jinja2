@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"/>
         <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet"/>
         <link rel="icon" href="{{ url_for('static', path='/favicon.svg') }}"/>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
     </head>
     <body>
         <h1 class="head">ToDo App</h1>
@@ -17,17 +18,12 @@
             </div>
 
             <div class="item">
-                <form>
-                    <input type="text" maxlength="140">
+                <form hx-post="/add" hx-target="#todos" hx-swap="beforeend" hx-on:htmx:after-request="this.reset()">
+                    <input type="text" maxlength="140" name="todo">
                     <button>Create todo item</button>
                 </form>
                 <div>
-                    <ul>
-                        {% for todo in todos %}
-                            <li>
-                                {{todo}}
-                            </li>
-                        {% endfor %}
+                    <ul id="todos" hx-get="/" hx-swap="innerHTML" hx-trigger="load">
                     </ul>
                 </div>
             </div>
