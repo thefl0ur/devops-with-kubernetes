@@ -1,21 +1,16 @@
 include .env
 
-all: build tag publish
+IMAGES ?= generator server
 
-build:
-	docker build -f Dockerfile.generator -t $(IMAGE)_generator .
-	docker build -f Dockerfile.server -t $(IMAGE)_server .
+all: $(IMAGES:%=publish-%)
 
-tag:
-	docker tag $(IMAGE)_generator $(IMAGE)_generator:$(VERSION)
-	docker tag $(IMAGE)_generator $(IMAGE)_generator:latest
+build-%:
+	docker build -f Dockerfile.$* -t $(IMAGE)_$* .
 
-	docker tag $(IMAGE)_server $(IMAGE)_server:$(VERSION)
-	docker tag $(IMAGE)_server $(IMAGE)_server:latest
+tag-%:
+	docker tag $(IMAGE)_$* $(IMAGE)_$*:$(VERSION)
+	docker tag $(IMAGE)_$* $(IMAGE)_$*:latest
 
-publish:
-	docker push $(IMAGE)_generator:$(VERSION)
-	docker push $(IMAGE)_generator:latest
-
-	docker push $(IMAGE)_server:$(VERSION)
-	docker push $(IMAGE)_server:latest
+publish-%: build-% tag-%
+	docker push $(IMAGE)_$*:$(VERSION)
+	docker push $(IMAGE)_$*:latest
