@@ -1,12 +1,8 @@
-import os
-
 import uvicorn
 from fastapi import FastAPI
 
+from todo_backend.config import settings
 from todo_backend.routes import router
-
-DEFAULT_PORT = 8001
-
 
 app = FastAPI(
     name="TodoAppBackend",
@@ -17,6 +13,5 @@ app = FastAPI(
 app.include_router(router)
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", DEFAULT_PORT))
-    print(f"Server started in port {port}")
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    print(f"Server started in port {settings.server_port}")
+    uvicorn.run(app, host=settings.server_address, port=settings.server_port)

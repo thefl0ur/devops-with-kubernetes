@@ -3,7 +3,7 @@ from pathlib import Path
 
 import httpx
 
-from todo_app.config import IMAGE_CACHE_DIR, IMAGE_NAME, IMAGE_TTL, RANDOM_IMAGE_SOURCE
+from todo_app.config import settings
 
 
 def _should_update(image_file) -> bool:
@@ -11,20 +11,20 @@ def _should_update(image_file) -> bool:
         return True
 
     now = datetime.now().timestamp()
-    if image_file.stat().st_ctime + IMAGE_TTL < now:
+    if image_file.stat().st_ctime + settings.image_ttl < now:
         return True
 
     return False
 
 
 async def update_image():
-    image_file = Path(IMAGE_CACHE_DIR) / IMAGE_NAME
+    image_file = Path(settings.image_cache_folder) / settings.image_name
 
     if not _should_update(image_file):
         return
 
     async with httpx.AsyncClient() as client:
-        response = await client.get(RANDOM_IMAGE_SOURCE, follow_redirects=True)
+        response = await client.get(settings.random_image_source, follow_redirects=True)
 
     if response.status_code != 200:
         return

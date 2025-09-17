@@ -1,10 +1,11 @@
 import httpx
 
+from todo_app.config import settings
+
 
 class TodoBackendService:
     def __init__(self):
-        self._url = "http://todo-app-backend-service:2345/todos"
-        # self._url = "http://localhost:8002/todos"
+        self._url = settings.backend_address
 
     async def _send_request(self, method: str, **kwargs) -> httpx.Response:
         async with httpx.AsyncClient() as client:

@@ -1,18 +1,18 @@
 import uuid
-from typing import Annotated, Union
+from typing import Annotated
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Form, Header, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from todo_app.config import IMAGE_NAME, TEMPLATES_DIR
+from todo_app.config import settings
 from todo_app.dependencies import get_todo_service
 from todo_app.services.todo_backend import TodoBackendService
 from todo_app.tasks import update_image
 
 router = APIRouter()
 
-templates = Jinja2Templates(directory=TEMPLATES_DIR)
+templates = Jinja2Templates(directory=settings.templates_dir)
 
 TODOS = []
 
@@ -32,7 +32,7 @@ async def root(
 
     context = {
         "request": request,
-        "image_url": IMAGE_NAME,
+        "image_url": settings.image_name,
         "uuid": uuid.uuid4().hex,
         "todos": TODOS,
     }
