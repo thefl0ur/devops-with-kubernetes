@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -14,6 +13,6 @@ func (h *PingpongHandler) Index(c echo.Context) (err error) {
 	count := counter.GetCount()
 
 	writer := h.WriterService
-	writer.Write(strconv.FormatInt(count, 10))
+	writer.Write(count)
 	return c.JSON(http.StatusOK, fmt.Sprintf("Pong %d", count))
 }

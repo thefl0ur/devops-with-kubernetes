@@ -1,15 +1,30 @@
 package services
 
-import "os"
+import (
+	"context"
+	"fmt"
+	"os"
+	"strconv"
+
+	"github.com/jackc/pgx/v5"
+)
 
 type WriterService struct {
-	Path string
+	db   *pgx.Conn
+	path string
 }
 
-func NewWriterService(path string) *WriterService {
-	return &WriterService{Path: path}
+func NewWriterService(path string, dbConnection *pgx.Conn) *WriterService {
+	w := &WriterService{}
+	w.db = dbConnection
+	w.path = path
+	return w
 }
 
-func (w *WriterService) Write(line string) {
-	os.WriteFile(w.Path, []byte(line), 0644)
+func (w *WriterService) Write(counter int64) {
+	os.WriteFile(w.path, []byte(strconv.FormatInt(counter, 10)), 0644)
+	_, err := w.db.Exec(context.Background(), "INSERT INTO counter (value) VALUES ($1);", counter)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+	}
 }

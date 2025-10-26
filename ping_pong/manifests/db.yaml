@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: exercises
+  name: ping-pong-postgres-stset
+spec:
+  serviceName: ping-pong-postgres-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresdb 
+  template:
+    metadata:
+      labels:
+        app: postgresdb
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17
+          ports:
+            - name: db-port
+              containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: ping-pong-postgres-configmap
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: initdb
+          configMap:
+            name: ping-pong-postgres-configmap
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: exercises
+  name: ping-pong-postgres-svc
+  labels:
+    app: db
+spec:
+  ports:
+  - port: 5432
+    name: db-port
+  clusterIP: None
+  selector:
+    app: postgresdb
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: exercises
+  name: ping-pong-postgres-configmap
+data:
+  POSTGRES_USER: ping_pong
+  POSTGRES_HOST_AUTH_METHOD: trust
+  POSTGRES_DB: ping_pong
+  db_init.sql: |
+    CREATE TABLE counter (
+        id BOOLEAN PRIMARY KEY DEFAULT TRUE,
+        value BIGINT NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+    CREATE OR REPLACE FUNCTION set_updated_at()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.updated_at := NOW();
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trg_set_updated_at
+    BEFORE INSERT OR UPDATE ON counter
+    FOR EACH ROW
+    EXECUTE FUNCTION set_updated_at();
+
+    CREATE OR REPLACE FUNCTION single_row_insert()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        -- If a row already exists, update it instead
+        IF EXISTS (SELECT 1 FROM counter) THEN
+            UPDATE counter
+              SET value = NEW.value,
+                  updated_at = NOW();
+            RETURN NULL;  -- suppress normal INSERT
+        END IF;
+
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trg_single_row_insert
+    BEFORE INSERT ON counter
+    FOR EACH ROW
+    EXECUTE FUNCTION single_row_insert();

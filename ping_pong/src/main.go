@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"log/slog"
 	"net/http"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 
 	"fmt"
@@ -31,24 +33,16 @@ func GetPort() int {
 	return port
 }
 
-func LoadInitialValue() int64 {
-	sharedFilePath := os.Getenv("SHARED_FILE_PATH")
-	data, err := os.ReadFile(sharedFilePath)
-	if err != nil {
-		return 0
-	}
-
-	value, err := strconv.ParseInt(string(data), 10, 0)
-	if err != nil {
-		return 0
-	}
-
-	return value
-}
-
 func main() {
-	counter := services.NewCounterService(LoadInitialValue())
-	writer := services.NewWriterService(os.Getenv("SHARED_FILE_PATH"))
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_CONNECTION_STRING"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
+	counter := services.NewCounterService(conn)
+	writer := services.NewWriterService(os.Getenv("SHARED_FILE_PATH"), conn)
 
 	pingpongHandler := &handlers.PingpongHandler{
 		CounterService: counter,
