@@ -2,17 +2,19 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body
 
+from todo_backend.handlers.schemas import TodoSchema
+from todo_backend.models import TodoModel
+
+
 router = APIRouter()
 
-TODOS = ["Thing 1", "Thing 2", "Thing 3"]
 
-
-@router.get("/todos")
+@router.get("/todos", response_model=list[TodoSchema])
 async def get_list() -> list[str]:
-    return TODOS
+    return await TodoSchema.from_queryset(TodoModel.all())
 
 
-@router.post("/todos")
+@router.post("/todos", response_model=TodoSchema)
 async def create(item: Annotated[str, Body(media_type="text/plain")]) -> str:
-    TODOS.append(item)
-    return item
+    entry = await TodoModel.create(text=item)
+    return await TodoSchema.from_tortoise_orm(entry)

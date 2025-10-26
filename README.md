@@ -47,3 +47,5 @@ Each exercise had release and a tag that matches the exercise number.
 [2.6. The project, step 10](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/2.6)
 
 [2.7. Stateful applications](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/2.7)
+
+[2.8. The project, step 11](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/2.8)

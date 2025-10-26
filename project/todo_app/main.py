@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
@@ -15,13 +16,11 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(
-    name="TodoApp", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan
-)
+app = FastAPI(name="TodoApp", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
 app.include_router(router)
 app.mount("/static", StaticFiles(directory="todo_app/static"), name="static")
 app.mount("/data", StaticFiles(directory=settings.image_cache_folder), name="data")
 
 if __name__ == "__main__":
-    print(f"Server started in port {settings.server_port}")
+    print(f"Server started in port {settings.server_port}")  # noqa
     uvicorn.run(app, host=settings.server_address, port=settings.server_port)

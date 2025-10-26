@@ -1,6 +1,14 @@
 import httpx
 
+from pydantic import BaseModel
+
 from todo_app.config import settings
+
+
+class TodoModel(BaseModel):
+    id: int
+    text: str
+    is_completed: bool = False
 
 
 class TodoBackendService:
@@ -14,12 +22,12 @@ class TodoBackendService:
 
         return response
 
-    async def load_data(self) -> list[str]:
+    async def load_data(self) -> list[TodoModel]:
         result = await self._send_request("GET")
-        return result.json()
+        return [TodoModel(**x) for x in result.json()]
 
-    async def insert(self, item: str) -> str:
+    async def insert(self, item: str) -> TodoModel:
         result = await self._send_request(
             "POST", content=item, headers={"Content-Type": "text/plain"}
         )
-        return result.json()
+        return TodoModel(**result.json())

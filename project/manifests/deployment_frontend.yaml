@@ -25,10 +25,6 @@ spec:
             mountPath: /tmp/todo_app_images/
           ports:
            - containerPort: 8000
-          env:
-           - name: SERVER_PORT
-             value: "8000"
-           - name: IMAGE_CACHE_FOLDER
-             value: "/tmp/todo_app_images/"
-           - name: BACKEND_ADDRESS
-             value: "http://todo-app-backend-service:2345/todos"
+          envFrom:
+            - configMapRef:
+                name: todo-app-frontend-configmap

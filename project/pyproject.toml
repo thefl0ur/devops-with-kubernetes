@@ -9,10 +9,49 @@ dependencies = [
     "httpx>=0.28.1",
     "jinja2>=3.1.6",
     "pydantic-settings>=2.10.1",
+    "tortoise-orm[asyncpg]>=0.25.1",
     "uvicorn>=0.35.0",
 ]
 
 [dependency-groups]
 dev = [
     "fastapi[standard]>=0.116.0",
+    "ruff>=0.14.2",
 ]
+
+[tool.ruff]
+line-length = 99
+target-version = "py312"
+extend-exclude = ["alembic"]
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "E",     # pycodestyle errors
+    "F",     # pyflakes
+    "W",     # pycodestyle - warning
+    "I",     # isort
+    "T10",   # flake8-debugger
+    "T20",   # flake8-print
+    "ICN",   # flake8-import-conventions
+    "ISC",   # flake8-implicit-str-concat
+     "PLE",  # pylint - error
+    "Q",     # flake8-quotes
+    "INT",
+]
+ignore = ["W291"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+lines-after-imports = 2
+lines-between-types = 1

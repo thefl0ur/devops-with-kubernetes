@@ -1,4 +1,5 @@
 import uuid
+
 from typing import Annotated
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Form, Header, Request
@@ -9,6 +10,7 @@ from todo_app.config import settings
 from todo_app.dependencies import get_todo_service
 from todo_app.services.todo_backend import TodoBackendService
 from todo_app.tasks import update_image
+
 
 router = APIRouter()
 
@@ -34,7 +36,7 @@ async def root(
         "request": request,
         "image_url": settings.image_name,
         "uuid": uuid.uuid4().hex,
-        "todos": TODOS,
+        "todos": todos,
     }
 
     background_tasks.add_task(update_image)

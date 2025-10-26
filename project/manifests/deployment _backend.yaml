@@ -18,6 +18,6 @@ spec:
           image: azska/dvk_project_backend:latest
           ports:
            - containerPort: 8001
-          env:
-           - name: SERVER_PORT
-             value: "8001"
+          envFrom:
+            - configMapRef:
+                name: todo-app-backend-configmap
