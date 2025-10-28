@@ -1,0 +1,13 @@
+FROM ghcr.io/astral-sh/uv:python3.13-alpine
+
+WORKDIR /app
+
+COPY ./periodic_task/pyproject.toml .
+
+COPY uv.lock .
+
+RUN uv sync
+
+ADD ./periodic_task/*  .
+
+CMD ["uv", "run",  "main.py"]

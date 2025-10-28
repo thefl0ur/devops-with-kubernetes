@@ -45,6 +45,11 @@ ignore = ["W291"]
 quote-style = "double"
 docstring-code-format = true
 
+[tool.uv.workspace]
+members = [
+    "periodic_task",
+]
+
 [tool.ruff.lint.isort]
 section-order = [
     "future",
