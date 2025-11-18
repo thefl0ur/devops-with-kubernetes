@@ -1,4 +1,4 @@
-from .todo import TodoSchema
+from .todo import TodoSchema as TodoSchema
 
 
-__all__ = ("TodoSchema")
+__all__ = ("TodoSchema",)
