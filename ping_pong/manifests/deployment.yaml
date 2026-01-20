@@ -25,4 +25,4 @@ spec:
             mountPath: /tmp/
           env:
             - name: DB_CONNECTION_STRING
-              value: postgresql://ping_pong@ping-pong-postgres-svc:5432/ping_pong
+              value: postgresql://ping_pong@ping-pong-postgres-svc.exercises:5432/ping_pong

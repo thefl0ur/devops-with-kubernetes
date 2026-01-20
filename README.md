@@ -55,3 +55,7 @@ Each exercise had release and a tag that matches the exercise number.
 [2.9. The project, step 12](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/2.9)
 
 [2.10. The project, step 13](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/2.10)
+
+### Chapter 4
+
+[3.1 Pingpong GKE](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.1)

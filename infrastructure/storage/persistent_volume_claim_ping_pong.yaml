@@ -4,7 +4,6 @@ metadata:
   namespace: exercises
   name: ping-pong-pvc
 spec:
-  storageClassName: ping-pong-pv
   accessModes:
     - ReadWriteOnce
   resources:
