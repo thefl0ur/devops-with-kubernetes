@@ -1,6 +1,6 @@
-string filePath = "/tmp/share.md";
-string url = "http://ping-pong-service:3456";
-string configuratedFile = "/opt/information.txt";
+string filePath = System.Environment.GetEnvironmentVariable("file_path");
+string url = System.Environment.GetEnvironmentVariable("ping_pong_url");
+string configuratedFile = System.Environment.GetEnvironmentVariable("configurated_file");
 string envParamKey = "MESSAGE";
 
 var builder = WebApplication.CreateBuilder(args);

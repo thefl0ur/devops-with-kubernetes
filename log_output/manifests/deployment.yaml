@@ -16,13 +16,14 @@ spec:
       volumes:
       - name: shared-folder
         persistentVolumeClaim:
-            claimName: ping-pong-pvc
+            claimName: log-output-pvc
       - name: config-file
         configMap:
           name: logoutput-configmap
       containers:
         - name: log-output
-          image: azska/log_output_server:2.5
+          image: azska/log_output_server:latest
+          imagePullPolicy: Always
           volumeMounts:
           - name: shared-folder
             mountPath: /tmp/
@@ -34,8 +35,24 @@ spec:
               configMapKeyRef:
                 name: logoutput-configmap
                 key: MESSAGE
+          - name: ping_pong_url
+            valueFrom:
+              configMapKeyRef:
+                name: logoutput-configmap
+                key: ping_pong_url
+          - name: file_path
+            valueFrom:
+              configMapKeyRef:
+                name: logoutput-configmap
+                key: file_path
+          - name: configurated_file
+            valueFrom:
+              configMapKeyRef:
+                name: logoutput-configmap
+                key: configurated_file
         - name: log-generator
-          image: azska/log_output_generator:1.10
+          image: azska/log_output_generator:latest
+          imagePullPolicy: Always
           volumeMounts:
           - name: shared-folder
             mountPath: /tmp/

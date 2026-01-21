@@ -59,3 +59,5 @@ Each exercise had release and a tag that matches the exercise number.
 ### Chapter 4
 
 [3.1 Pingpong GKE](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.1)
+
+[3.2 Back to Ingress](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.2)

@@ -5,5 +5,8 @@ metadata:
   name: logoutput-configmap
 data:
   MESSAGE: Hello world!
+  ping_pong_url: "http://ping-pong-service.exercises:80"
+  file_path: "/tmp/share.md"
+  configurated_file: "/opt/information.txt"
   information.txt: |
     this text is from file
