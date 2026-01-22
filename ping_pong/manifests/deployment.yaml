@@ -20,6 +20,7 @@ spec:
       containers:
         - name: ping-pong
           image: azska/ping_pong:latest
+          imagePullPolicy: Always
           volumeMounts:
           - name: shared-folder
             mountPath: /tmp/

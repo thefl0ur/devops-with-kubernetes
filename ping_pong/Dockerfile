@@ -2,7 +2,11 @@ FROM golang:1.24.5-alpine AS build
 
 WORKDIR /app
 
-COPY src/ .
+COPY src/go.mod src/go.sum ./
+
+RUN go mod download
+
+COPY src/ . 
 
 RUN ["go", "build"]
 

@@ -16,8 +16,3 @@ type (
 		CounterService *services.CounterService
 	}
 )
-
-type (
-	HomeHandler struct {
-	}
-)

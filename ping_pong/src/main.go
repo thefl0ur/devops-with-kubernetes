@@ -50,12 +50,11 @@ func main() {
 	}
 	pingsHandler := &handlers.PingsHandler{CounterService: counter}
 
-	homeHandler := &handlers.HomeHandler{}
 	e := echo.New()
 
-	e.GET("/pingpong", pingpongHandler.Index)
+	e.GET("/", pingpongHandler.Index)
 	e.GET("/pings", pingsHandler.Index)
-	e.GET("/", homeHandler.Index)
+
 	if err := e.Start(fmt.Sprintf(":%d", GetPort())); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		slog.Error("failed to start server", "error", err)
 	}
