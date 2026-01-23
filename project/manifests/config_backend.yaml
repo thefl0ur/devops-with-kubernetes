@@ -5,4 +5,4 @@ metadata:
   name: todo-app-backend-configmap
 data:
   SERVER_PORT: "8001"
-  DB_CONNECTIONS_STRING: "postgres://admin@project-postgres-svc:5432/project_app"
+  DB_CONNECTIONS_STRING: "postgres://admin@project-postgres-svc.project:5432/project_app"

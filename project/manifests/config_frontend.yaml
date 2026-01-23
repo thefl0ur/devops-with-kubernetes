@@ -6,4 +6,4 @@ metadata:
 data:
   SERVER_PORT: "8000"
   IMAGE_CACHE_FOLDER: "/tmp/todo_app_images/"
-  BACKEND_ADDRESS: "http://todo-app-backend-service:2345/todos"
+  BACKEND_ADDRESS: "http://todo-app-backend-service.project:80/todos"

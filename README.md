@@ -65,3 +65,5 @@ Each exercise had release and a tag that matches the exercise number.
 [3.3 To the Gateway](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.3)
 
 [3.4 Rewritten routing](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.4)
+
+[3.5 The project, step 14](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.5)

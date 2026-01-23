@@ -20,6 +20,7 @@ spec:
       containers:
         - name: todo-app-frontend
           image: azska/dvk_project_frontend:latest
+          imagePullPolicy: Always
           volumeMounts:
           - name: cache-folder
             mountPath: /tmp/todo_app_images/
