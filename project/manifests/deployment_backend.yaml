@@ -8,6 +8,8 @@ spec:
   selector:
     matchLabels:
       app: todo-app-backend
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
