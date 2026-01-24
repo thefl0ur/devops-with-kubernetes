@@ -1,0 +1,39 @@
+name: Delete K8S environment (namespace)
+on:
+  delete:
+
+jobs:
+  delete-k8s-namespace:
+    name: "Delete k8s namespace"
+    runs-on: ubuntu-latest
+    environment: dwk_gke
+    if: github.event.ref_type == 'branch'
+
+    steps:
+      - name: "Set Up Google Cloud Service Account"
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GKE_SA_KEY }}"
+
+      - name: "Set up Cloud SDK"
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          install_components: "gke-gcloud-auth-plugin"
+
+      - name: "Get GKE Credentials"
+        uses: "google-github-actions/get-gke-credentials@v2"
+        with:
+          cluster_name: "${{ vars.GKE_CLUSTER }}"
+          project_id: "${{ secrets.GKE_PROJECT }}"
+          location: "${{ vars.GKE_ZONE }}"
+
+      - name: "Set target namespace"
+        run: |
+          if [ ${{ github.event.ref }} = "master" ]; then
+            echo "NAMESPACE=project" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=development-${{ github.event.ref }}" >> $GITHUB_ENV
+          fi
+      
+      - name: "Delete namespace"
+        run: kubectl delete namespace $NAMESPACE --ignore-not-found
