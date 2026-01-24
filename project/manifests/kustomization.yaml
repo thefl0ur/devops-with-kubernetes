@@ -6,6 +6,7 @@ namespace: project
 resources:
   - namespace.yaml
   - db.yaml
+  - db_backup.yaml
   - config_backend.yaml
   - config_frontend.yaml
   - deployment_backend.yaml

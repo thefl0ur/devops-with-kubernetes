@@ -110,3 +110,5 @@ Each exercise had release and a tag that matches the exercise number.
   DIY: Scaling and high availability must be designed and implemented manually, requiring careful planning and testing and also need highly qualified engineers.
 
 </details>
+
+[3.10 The project, step 18](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.10)
