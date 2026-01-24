@@ -73,3 +73,40 @@ Each exercise had release and a tag that matches the exercise number.
 [3.7 The project, step 16](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.7)
 
 [3.8 The project, step 17](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.8)
+
+[3.9 DBaaS vs DIY](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.9)
+
+<details>
+  <summary>DBaaS vs DIY</summary> 
+
+  **Getting Started**
+
+  DBaaS: Minimal Setup. The database is provisioned through a web interface or API by selecting size, region, and basic security settings, no manual installation or configuration needed.
+
+  DIY: Requires significant work: preparing the server, installing software, configuring networking and users.
+
+  **Costs**
+
+  DBaaS: Costs are usage-based and predictable, While it may seem more expensive per month, it reduces engineering time and operational overhead.
+
+  DIY: Infrastructure costs may be lower, especially if resources already exist. There are hidden costs related to time spent on setup, monitoring, and troubleshooting.
+
+  **Maintenance**
+
+  DBaaS:Maintenance tasks such as updates, patches, monitoring, and scaling are mostly automated or handled by the provider.
+
+  DIY: All maintenance is manual or scripted. The team is responsible for updates, monitoring tools, scaling decisions, and downtime handling.
+
+  **Control and customization**
+
+  DBaaS: Limited control over low-level configuration. Custom database settings may be restricted by the provider.
+
+  DIY: Full control over database configuration, operating system, and performance tuning.
+
+  **Scaling and availability**
+
+  DBaaS: Scaling and high availability are built in, with options for replication and automated failover configured through simple settings.
+
+  DIY: Scaling and high availability must be designed and implemented manually, requiring careful planning and testing and also need highly qualified engineers.
+
+</details>
