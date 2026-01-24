@@ -112,3 +112,5 @@ Each exercise had release and a tag that matches the exercise number.
 </details>
 
 [3.10 The project, step 18](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.10)
+
+[3.11 The project, step 19](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.11)
