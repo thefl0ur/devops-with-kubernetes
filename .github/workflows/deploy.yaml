@@ -63,9 +63,20 @@ jobs:
       - name: "Set up kustomize"
         uses: syntaqx/setup-kustomize@v1
 
+      - name: "Set target namespace"
+        run: |
+          if [ ${{ env.BRANCH }} = "master" ]; then
+            echo "NAMESPACE=project" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=development-${{ env.BRANCH }}" >> $GITHUB_ENV
+          fi
+          
       - name: Deploy
         run: |
           cd ./project/manifests
+          kubectl create namespace $NAMESPACE || true
+          kubectl config set-context --current --namespace=$NAMESPACE
+          kustomize edit set namespace $NAMESPACE
           kustomize edit set image azska/dvk_project_backend:latest=$BACKEND_IMAGE_TAGg
           kustomize edit set image azska/dvk_project_frontend:latest=$FRONTEND_IMAGE_TAG
           kustomize build . | kubectl apply -f -
