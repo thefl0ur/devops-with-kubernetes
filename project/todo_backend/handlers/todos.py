@@ -27,4 +27,5 @@ async def create(item: Annotated[str, Body(media_type="text/plain")]) -> str:
         raise HTTPException(status_code=400, detail="Too long")
 
     entry = await TodoModel.create(text=item)
+    logger.info(f"Task id {entry.id} created successfully: {entry.text}")
     return await TodoSchema.from_tortoise_orm(entry)

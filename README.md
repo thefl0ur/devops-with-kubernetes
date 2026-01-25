@@ -114,3 +114,13 @@ Each exercise had release and a tag that matches the exercise number.
 [3.10 The project, step 18](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.10)
 
 [3.11 The project, step 19](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.11)
+
+[3.12 The project, step 20](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/3.12)
+
+<details>
+  <summary>picture of the logs when a new todo is created</summary> 
+
+  This is funny, that standard python's logger produces output into STDERR. Didn't know about it earlier
+
+  ![picture of the logs when a new todo is created](.pic/logs.png)
+</details>
