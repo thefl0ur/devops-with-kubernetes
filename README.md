@@ -145,3 +145,5 @@ Each exercise had release and a tag that matches the exercise number.
   ![Details of query, showing pods created by StatefulSet in prometheus namespace](.pic/prometheus_2.png)
 
 </details>
+
+[4.4 Your canary](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.4)

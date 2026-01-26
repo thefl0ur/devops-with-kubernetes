@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: ping-pong-rollout
+  namespace: exercises
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong
+  template:
+    metadata:
+      labels:
+        app: ping-pong
+    spec:
+      volumes:
+      - name: shared-folder
+        persistentVolumeClaim:
+            claimName: ping-pong-pvc
+      containers:
+        - name: ping-pong
+          image: azska/ping_pong:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: shared-folder
+            mountPath: /tmp/
+          env:
+            - name: DB_CONNECTION_STRING
+              value: postgresql://ping_pong@ping-pong-postgres-svc.exercises:5432/ping_pong
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8002
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+  strategy:
+    canary:
+      steps:
+      - setWeight: 50
+      - pause: {duration: 2m}  # Pause for 2 minutes to allow metrics collection
+      - analysis:
+          templates:
+          - templateName: ping-pong-cpu-analysis
+      - setWeight: 100
