@@ -128,3 +128,5 @@ Each exercise had release and a tag that matches the exercise number.
 ### chapter 5
 
 [4.1. Readines probe](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.1)
+
+[4.2. The project, step 21](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.2)

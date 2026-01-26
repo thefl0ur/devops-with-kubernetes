@@ -21,7 +21,7 @@ spec:
             claimName: todo-app-pvc
       containers:
         - name: todo-app-frontend
-          image: azska/dvk_project_frontend:latest
+          image: azska/dvk_project_frontend:4.2
           imagePullPolicy: Always
           volumeMounts:
           - name: cache-folder
@@ -31,6 +31,22 @@ spec:
           envFrom:
             - configMapRef:
                 name: todo-app-frontend-configmap
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
           resources:
             requests:
               cpu: 100m
