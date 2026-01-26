@@ -130,3 +130,18 @@ Each exercise had release and a tag that matches the exercise number.
 [4.1. Readines probe](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.1)
 
 [4.2. The project, step 21](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.2)
+
+[4.3 Prometheus](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.3)
+
+<details>
+  <summary>Query that shows the number of pods created by StatefulSets in prometheus namespaceated</summary> 
+
+  ```
+  sum(kube_pod_info{created_by_kind="StatefulSet", namespace="prometheus"})
+  ```
+
+  ![Result of query](.pic/prometheus_1.png)
+
+  ![Details of query, showing pods created by StatefulSet in prometheus namespace](.pic/prometheus_2.png)
+
+</details>
