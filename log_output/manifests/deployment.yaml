@@ -8,6 +8,8 @@ spec:
   selector:
     matchLabels:
       app: log-output
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -22,7 +24,7 @@ spec:
           name: logoutput-configmap
       containers:
         - name: log-output
-          image: azska/log_output_server:latest
+          image: azska/log_output_server:4.1
           imagePullPolicy: Always
           volumeMounts:
           - name: shared-folder
@@ -50,6 +52,14 @@ spec:
               configMapKeyRef:
                 name: logoutput-configmap
                 key: configurated_file
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
         - name: log-generator
           image: azska/log_output_generator:latest
           imagePullPolicy: Always

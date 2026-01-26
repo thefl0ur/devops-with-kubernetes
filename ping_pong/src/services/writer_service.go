@@ -6,17 +6,17 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type WriterService struct {
-	db   *pgx.Conn
+	db   *pgxpool.Pool
 	path string
 }
 
-func NewWriterService(path string, dbConnection *pgx.Conn) *WriterService {
+func NewWriterService(path string, dbPool *pgxpool.Pool) *WriterService {
 	w := &WriterService{}
-	w.db = dbConnection
+	w.db = dbPool
 	w.path = path
 	return w
 }

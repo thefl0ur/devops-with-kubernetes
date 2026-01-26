@@ -124,3 +124,7 @@ Each exercise had release and a tag that matches the exercise number.
 
   ![picture of the logs when a new todo is created](.pic/logs.png)
 </details>
+
+### chapter 5
+
+[4.1. Readines probe](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.1)

@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 
 	"fmt"
@@ -34,15 +34,15 @@ func GetPort() int {
 }
 
 func main() {
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_CONNECTION_STRING"))
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DB_CONNECTION_STRING"))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	defer pool.Close()
 
-	counter := services.NewCounterService(conn)
-	writer := services.NewWriterService(os.Getenv("SHARED_FILE_PATH"), conn)
+	counter := services.NewCounterService(pool)
+	writer := services.NewWriterService(os.Getenv("SHARED_FILE_PATH"), pool)
 
 	pingpongHandler := &handlers.PingpongHandler{
 		CounterService: counter,
@@ -54,6 +54,14 @@ func main() {
 
 	e.GET("/", pingpongHandler.Index)
 	e.GET("/pings", pingsHandler.Index)
+	e.GET("/health", func(c echo.Context) error {
+		// Test database connection by executing a simple query
+		err := pool.Ping(context.Background())
+		if err != nil {
+			return c.String(http.StatusServiceUnavailable, "Database not connected")
+		}
+		return c.String(http.StatusOK, "OK")
+	})
 
 	if err := e.Start(fmt.Sprintf(":%d", GetPort())); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		slog.Error("failed to start server", "error", err)

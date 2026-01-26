@@ -12,4 +12,17 @@ public class PingPongClient
           response.EnsureSuccessStatusCode();
           return await response.Content.ReadAsStringAsync();
      }
+
+     public async Task<bool> IsAlive()
+     {
+          try
+          {
+               using var response = await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, "pings"));
+               return response.IsSuccessStatusCode;
+          }
+          catch
+          {
+               return false;
+          }
+     }
 }

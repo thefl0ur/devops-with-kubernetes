@@ -27,4 +27,23 @@ app.MapGet("/", async (PingPongClient pingPongClient) => {
     return Results.Text(result);
 });
 
+app.MapGet("/health", async (PingPongClient pingPongClient) => {
+    try
+    {
+        bool isAlive = await pingPongClient.IsAlive();
+        if (isAlive)
+        {
+            return Results.Ok("OK");
+        }
+        else
+        {
+            return Results.StatusCode(503);
+        }
+    }
+    catch (Exception)
+    {
+        return Results.StatusCode(503);
+    }
+});
+
 app.Run();
