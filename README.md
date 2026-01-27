@@ -154,6 +154,6 @@ Each exercise had release and a tag that matches the exercise number.
 
 <details>
   <summary>Small demo with webhook integration</summary> 
-  https://github.com/thefl0ur/devops-with-kubernetes/.pic/exersice_4_6_demo.mp4
+  https://github.com/thefl0ur/devops-with-kubernetes/raw/refs/heads/master/exersice_4_6_demo.mp4
 
 </details>
