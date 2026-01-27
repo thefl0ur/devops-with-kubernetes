@@ -1,0 +1,14 @@
+<li id="todo-item-{{ todo.id }}">
+    {% if todo.is_complete %}
+        <s>{{ todo.text }}</s>
+    {% else %}
+        {{ todo.text }}
+        <button
+            hx-post="/update/{{ todo.id }}"
+            hx-target="#todos"
+            hx-swap="innerHTML"
+            class="complete-btn">
+            Complete
+        </button>
+    {% endif %}
+</li>

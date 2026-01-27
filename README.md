@@ -147,3 +147,5 @@ Each exercise had release and a tag that matches the exercise number.
 </details>
 
 [4.4 Your canary](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.4)
+
+[4.5 The project, step 22](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.5)

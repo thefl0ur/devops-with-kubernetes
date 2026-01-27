@@ -27,20 +27,47 @@ async def root(
     hx_request: Annotated[str | None, Header()] = None,
 ):
     todos = await api_client.load_data()
+    # Sort todos: incomplete first, then completed
+    # Within each group, sort by ID descending (newest first)
+    sorted_todos = sorted(
+        todos, key=lambda x: (x.is_complete, -x.id if not x.is_complete else x.id)
+    )
+
     if hx_request:
         return templates.TemplateResponse(
-            request=request, name="todos.jinja2", context={"todos": todos}
+            request=request, name="todos.jinja2", context={"todos": sorted_todos}
         )
 
     context = {
         "request": request,
         "image_url": settings.image_name,
         "uuid": uuid.uuid4().hex,
-        "todos": todos,
+        "todos": sorted_todos,
     }
 
     background_tasks.add_task(update_image)
     return templates.TemplateResponse("index.jinja2", context)
+
+
+@router.post("/update/{todo_id}", response_class=HTMLResponse)
+async def update(
+    request: Request,
+    todo_id: int,
+    api_client: Annotated[TodoBackendService, Depends(get_todo_service)],
+):
+    await api_client.update(todo_id)
+    # Load all todos to get the updated list
+    all_todos = await api_client.load_data()
+    # Sort todos: incomplete first, then completed
+    # Within each group, sort by ID descending (newest first)
+    sorted_todos = sorted(
+        all_todos, key=lambda x: (x.is_complete, -x.id if not x.is_complete else x.id)
+    )
+
+    # Return the full sorted list
+    return templates.TemplateResponse(
+        request=request, name="todos.jinja2", context={"todos": sorted_todos}
+    )
 
 
 @router.post("/add", response_class=HTMLResponse)
@@ -50,6 +77,15 @@ async def create(
     api_client: Annotated[TodoBackendService, Depends(get_todo_service)],
 ):
     created_todo = await api_client.insert(todo)
+    # Load all todos to get the updated list
+    all_todos = await api_client.load_data()
+    # Sort todos: incomplete first, then completed
+    # Within each group, sort by ID descending (newest first)
+    sorted_todos = sorted(
+        all_todos, key=lambda x: (x.is_complete, -x.id if not x.is_complete else x.id)
+    )
+
+    # Return the full sorted list
     return templates.TemplateResponse(
-        request=request, name="todos.jinja2", context={"todos": [created_todo]}
+        request=request, name="todos.jinja2", context={"todos": sorted_todos}
     )

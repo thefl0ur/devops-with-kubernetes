@@ -6,6 +6,7 @@ from todo_backend.models import TodoModel
 
 
 if TYPE_CHECKING:  # pragma: nocoverage
+
     class TodoSchema(TodoModel, PydanticModel):  # type:ignore[misc]
         pass
 else:
