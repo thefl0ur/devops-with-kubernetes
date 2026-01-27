@@ -11,6 +11,7 @@ resources:
   - config_frontend.yaml
   - deployment_backend.yaml
   - deployment_frontend.yaml
+  - deployment_broadcaster.yaml
   - service_backend.yaml
   - service_frontend.yaml
   - persistent_volume_claim.yml

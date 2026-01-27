@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import RegisterTortoise
 
 from todo_backend.config import settings
+from todo_backend.publisher import NatsPublisher
 from todo_backend.routes import router
 
 
@@ -16,6 +17,13 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    nats_publisher = None
+    if settings.nats_url:
+        nats_publisher = NatsPublisher(settings.nats_url)
+        await nats_publisher.connect()
+
+    app.state.nats_publisher = nats_publisher
+
     async with RegisterTortoise(
         app,
         db_url=settings.db_connections_string,
@@ -23,6 +31,9 @@ async def lifespan(app: FastAPI):
         generate_schemas=True,
     ):
         yield
+
+    if nats_publisher and nats_publisher.nc:
+        await nats_publisher.nc.close()
 
 
 app = FastAPI(

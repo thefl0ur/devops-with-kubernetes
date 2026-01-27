@@ -1,6 +1,6 @@
 include .env
 
-IMAGES ?= frontend backend cronjob
+IMAGES ?= frontend backend cronjob broadcaster
 
 all: $(IMAGES:%=publish-%)
 

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: project
+  name: todo-app-broadcaster-deployment
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: broadcaster
+  template:
+    metadata:
+      labels:
+        app: broadcaster
+    spec:
+      containers:
+        - name: broadcaster
+          image: azska/dvk_project_broadcaster:4.6
+          env:
+            - name: NATS_URL
+              value: nats://my-nats.default.svc.cluster.local:4222
+            - name: WEBHOOK_URL
+              value: "https://webhook.site/4904a52c-aced-4f7c-982b-802465501cb8"

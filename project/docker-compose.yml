@@ -22,10 +22,12 @@ services:
     environment:
       DB_CONNECTIONS_STRING: postgres://admin:password@db:5432/project_app
       SERVER_PORT: 8001
+      NATS_URL: nats://nats:4222
     ports:
       - "8001:8001"
     depends_on:
       - db
+      - nats
     volumes:
       - ./todo_backend:/app/todo_backend
     networks:
@@ -38,6 +40,22 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
+  broadcaster:
+    build:
+      context: .
+      dockerfile: Dockerfile.broadcaster
+    volumes:
+      - ./broadcaster:/app/broadcaster
+    stdin_open: true
+    tty: true
+    environment:
+      NATS_URL: nats://nats:4222
+      WEB_HOOK: https://webhook.site/b80f3cbe-d0f9-4bc6-989d-b5cff51f7e4a
+    depends_on:
+      - nats
+    networks:
+      - app-network
 
   frontend:
     build:
@@ -64,7 +82,19 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-
+  
+  nats:
+    image: nats:2.11
+    ports:
+      - "4222:4222"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z localhost 4222"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
 volumes:
   postgres_data:
   todo_app_images:

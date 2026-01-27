@@ -6,3 +6,4 @@ metadata:
 data:
   SERVER_PORT: "8001"
   DB_CONNECTIONS_STRING: "postgres://admin@project-postgres-svc.project:5432/project_app"
+  NATS_URL: nats://my-nats.default.svc.cluster.local:4222

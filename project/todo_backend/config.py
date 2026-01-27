@@ -7,5 +7,7 @@ class Settings(BaseSettings):
 
     db_connections_string: str
 
+    nats_url: str | None = None
+
 
 settings = Settings()

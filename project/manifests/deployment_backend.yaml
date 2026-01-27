@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: todo-app-backend
-          image: azska/dvk_project_backend:4.5
+          image: azska/dvk_project_backend:4.6
           imagePullPolicy: Always
           ports:
            - containerPort: 8001
