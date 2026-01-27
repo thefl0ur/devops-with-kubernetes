@@ -29,3 +29,15 @@ async def create(item: Annotated[str, Body(media_type="text/plain")]) -> str:
     entry = await TodoModel.create(text=item)
     logger.info(f"Task id {entry.id} created successfully: {entry.text}")
     return await TodoSchema.from_tortoise_orm(entry)
+
+
+@router.put("/todos/{todo_id}", response_model=TodoSchema)
+async def update_todo(todo_id: int) -> TodoSchema:
+    todo = await TodoModel.get_or_none(id=todo_id)
+    if not todo:
+        raise HTTPException(status_code=404, detail="Todo not found")
+
+    todo.is_complete = True
+    await todo.save()
+
+    return await TodoSchema.from_tortoise_orm(todo)

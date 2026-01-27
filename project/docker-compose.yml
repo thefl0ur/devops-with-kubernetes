@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: project_app
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      DB_CONNECTIONS_STRING: postgres://admin:password@db:5432/project_app
+      SERVER_PORT: 8001
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    volumes:
+      - ./todo_backend:/app/todo_backend
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    environment:
+      BACKEND_ADDRESS: http://backend:8001/todos
+      SERVER_PORT: 8000
+      IMAGE_CACHE_FOLDER: /tmp/todo_app_images/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - backend
+    volumes:
+      - ./todo_app:/app/todo_app
+      - todo_app_images:/tmp/todo_app_images/
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+  todo_app_images:
+
+networks:
+  app-network:
+    driver: bridge
