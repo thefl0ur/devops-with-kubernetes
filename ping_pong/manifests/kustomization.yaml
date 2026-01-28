@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- analysis_template.yaml
+- db.yaml
+- deployment.yaml
+- rollout.yaml
+- services.yaml
+
+- persistent_volume_claim_ping_pong.yaml
+
+images:
+- name: azska/ping_pong
+  newName: azska/ping_pong
+  newTag: "4.1"

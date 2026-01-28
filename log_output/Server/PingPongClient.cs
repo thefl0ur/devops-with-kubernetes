@@ -17,7 +17,7 @@ public class PingPongClient
      {
           try
           {
-               using var response = await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, "pings"));
+               using var response = await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, "pings"));
                return response.IsSuccessStatusCode;
           }
           catch

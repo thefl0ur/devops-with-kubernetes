@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- config_map.yaml
+- deployment.yaml
+- service.yaml
+- gateway.yml
+- route.yml
+- persistent_volume_claim_log.yaml
+
+images:
+- name: azska/log_output_server
+  newName: azska/log_output_server
+  newTag: "4.1"
+- name: azska/log_output_generator
+  newName: azska/log_output_generator
+  newTag: "1.10"

@@ -19,7 +19,7 @@ spec:
             claimName: ping-pong-pvc
       containers:
         - name: ping-pong
-          image: azska/ping_pong:latest
+          image: azska/ping_pong:4.1
           imagePullPolicy: Always
           volumeMounts:
           - name: shared-folder
