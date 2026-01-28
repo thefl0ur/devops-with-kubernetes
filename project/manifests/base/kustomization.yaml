@@ -1,23 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: project
-
 resources:
-- namespace.yaml
-- db.yaml
-- db_backup.yaml
-- config_backend.yaml
-- config_frontend.yaml
-- deployment_backend.yaml
-- deployment_frontend.yaml
-- deployment_broadcaster.yaml
-- service_backend.yaml
-- service_frontend.yaml
-- persistent_volume_claim.yml
-- cronjob.yaml
-- gateway.yml
-- route.yml
+  - db.yaml
+  - db_backup.yaml
+  - config_backend.yaml
+  - config_frontend.yaml
+  - deployment_backend.yaml
+  - deployment_frontend.yaml
+  - deployment_broadcaster.yaml
+  - service_backend.yaml
+  - service_frontend.yaml
+  - persistent_volume_claim.yml
+  - cronjob.yaml
+  - gateway.yml
+  - route.yml
 
 images:
 - name: azska/dvk_project_backend

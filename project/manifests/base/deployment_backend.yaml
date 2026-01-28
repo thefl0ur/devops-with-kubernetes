@@ -1,40 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: project
-  name: todo-app-frontend-deployment
+  name: todo-app-backend-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo-app-frontend
+      app: todo-app-backend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: todo-app-frontend
+        app: todo-app-backend
     spec:
-      volumes:
-      - name: cache-folder
-        persistentVolumeClaim:
-            claimName: todo-app-pvc
       containers:
-        - name: todo-app-frontend
-          image: azska/dvk_project_frontend:4.5
+        - name: todo-app-backend
+          image: azska/dvk_project_backend:4.6
           imagePullPolicy: Always
-          volumeMounts:
-          - name: cache-folder
-            mountPath: /tmp/todo_app_images/
           ports:
-           - containerPort: 8000
+           - containerPort: 8001
           envFrom:
             - configMapRef:
-                name: todo-app-frontend-configmap
+                name: todo-app-backend-configmap
           livenessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: 8001
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -42,7 +34,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /ready
-              port: 8000
+              port: 8001
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 3
