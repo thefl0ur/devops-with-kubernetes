@@ -10,9 +10,9 @@ resources:
 - persistent_volume_claim_log.yaml
 
 images:
-- name: azska/log_output_server
-  newName: azska/log_output_server
-  newTag: "4.1"
 - name: azska/log_output_generator
   newName: azska/log_output_generator
   newTag: "1.10"
+- name: azska/log_output_server
+  newName: azska/log_output_server
+  newTag: 705af37d545c9d2f9b698315852d4f76a45d3d64
