@@ -1,9 +1,8 @@
 name: Deploy todo application
 
 on:
-  push:
-    paths:
-      - "project/**"
+  workflow_dispatch:  # Only manual triggering
+
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   BRANCH: ${{ github.ref_name }}
@@ -77,6 +76,6 @@ jobs:
           kubectl create namespace $NAMESPACE || true
           kubectl config set-context --current --namespace=$NAMESPACE
           kustomize edit set namespace $NAMESPACE
-          kustomize edit set image azska/dvk_project_backend:latest=$BACKEND_IMAGE_TAGg
+          kustomize edit set image azska/dvk_project_backend:latest=$BACKEND_IMAGE_TAG
           kustomize edit set image azska/dvk_project_frontend:latest=$FRONTEND_IMAGE_TAG
           kustomize build . | kubectl apply -f -
