@@ -1,0 +1,94 @@
+name: GitOps Pipeline for ToDo App (project)
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - "project/**"
+      - "!project/manifests/**"
+
+env:
+  FRONTEND_IMAGE: dvk_project_frontend
+  BACKEND_IMAGE: dvk_project_backend
+  CRONJOB_IMAGE: dvk_project_cronjob
+  BROADCASTER_IMAGE: dvk_project_broadcaster
+
+jobs:
+  publish-images:
+    name: Build and Publish Images
+    runs-on: ubuntu-latest
+    environment: dwk_gke
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: "Prepare image tags"
+        run: |
+          echo "FRONTEND_IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.FRONTEND_IMAGE }}:${{ github.sha }}" >> $GITHUB_ENV
+          echo "BACKEND_IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" >> $GITHUB_ENV
+          echo "CRONJOB_IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CRONJOB_IMAGE }}:${{ github.sha }}" >> $GITHUB_ENV
+          echo "BROADCASTER_IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.BROADCASTER_IMAGE }}:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Detect changes and build images
+        run: |
+          git fetch --depth=2 origin ${{ github.ref }}
+
+          if git diff --name-only HEAD~1 HEAD | grep -qE "(project/todo_app/|project/Dockerfile\.frontend|project/pyproject\.toml)"; then
+            echo "Building frontend image..."
+            docker buildx build --file ./project/Dockerfile.frontend \
+              --tag ${{ env.FRONTEND_IMAGE_TAG }} --push ./project
+            echo "Update kustomization for frontend"
+            cd project/manifests
+            kustomize edit set image azska/dvk_project_frontend=${{ env.FRONTEND_IMAGE_TAG }}
+            cd ../..
+          fi
+
+          if git diff --name-only HEAD~1 HEAD | grep -qE "(project/todo_backend/|project/Dockerfile\.backend|project/pyproject\.toml)"; then
+            echo "Building backend image..."
+            docker buildx build --file ./project/Dockerfile.backend \
+              --tag ${{ env.BACKEND_IMAGE_TAG }} --push ./project
+            echo "Update kustomization for backend"
+            cd project/manifests
+            kustomize edit set image azska/dvk_project_backend=${{ env.BACKEND_IMAGE_TAG }}
+            cd ../..
+          fi
+
+          if git diff --name-only HEAD~1 HEAD | grep -qE "(project/periodic_task/|project/Dockerfile\.cronjob|project/periodic_task/pyproject\.toml)"; then
+            echo "Building cronjob image..."
+            docker buildx build --file ./project/Dockerfile.cronjob \
+              --tag ${{ env.CRONJOB_IMAGE_TAG }} --push ./project
+            echo "Update kustomization for cronjob"
+            cd project/manifests
+            kustomize edit set image azska/dvk_project_cronjob=${{ env.CRONJOB_IMAGE_TAG }}
+            cd ../..
+          fi
+
+          if git diff --name-only HEAD~1 HEAD | grep -qE "(project/broadcaster/|project/Dockerfile\.broadcaster|project/pyproject\.toml)"; then
+            echo "Building broadcaster image..."
+            docker buildx build --file ./project/Dockerfile.broadcaster \
+              --tag ${{ env.BROADCASTER_IMAGE_TAG }} --push ./project
+            echo "Update kustomization for broadcaster"
+            cd project/manifests
+            kustomize edit set image azska/dvk_project_broadcaster=${{ env.BROADCASTER_IMAGE_TAG }}
+            cd ../..
+          fi
+
+      - name: Commit kustomization.yaml to GitHub
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "project/manifests/kustomization.yaml"
+          message: "Update image tags for Project components ${{ github.sha }}"
+        if: success()
