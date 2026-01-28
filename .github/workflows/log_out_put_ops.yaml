@@ -1,0 +1,73 @@
+name: GitOps LogOutput
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - "log_output/**"
+
+env:
+  GENERATOR_IMAGE: log_output_generator
+  SERVER_IMAGE: log_output_server
+
+jobs:
+  publish-images:
+    name: Build and Publish Images
+    runs-on: ubuntu-latest
+    environment: dwk_gke
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: "Prepare image tags"
+        run: |
+          echo "GENERATOR_IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GENERATOR_IMAGE }}:${{ github.sha }}" >> $GITHUB_ENV
+          echo "SERVER_IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVER_IMAGE }}:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Detect changes and build images
+        run: |
+          # Fetch more history to enable comparison
+          git fetch --depth=2 origin ${{ github.ref }}
+
+          # Check if generator files changed
+          if git diff --name-only HEAD~1 HEAD | grep -qE "(log_output/Generator/|log_output/Dockerfile\.generator)"; then
+            echo "Building generator image..."
+            docker buildx build --file ./log_output/Dockerfile.generator \
+              --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GENERATOR_IMAGE }}:${{ github.sha }} --push ./log_output
+            echo "Update kustomization for generator"
+            cd log_output/manifests
+            kustomize edit set image azska/log_output_generator=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GENERATOR_IMAGE }}:${{ github.sha }}
+            cd ../..
+          fi
+
+          # Check if server files changed
+          if git diff --name-only HEAD~1 HEAD | grep -qE "(log_output/Server/|log_output/Dockerfile\.server)"; then
+            echo "Building server image..."
+            docker buildx build --file ./log_output/Dockerfile.server \
+              --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVER_IMAGE }}:${{ github.sha }} --push ./log_output
+
+            echo "Update kustomization for server"
+            cd log_output/manifests
+            kustomize edit set image azska/log_output_server=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVER_IMAGE }}:${{ github.sha }}
+            cd ../..
+          fi
+
+      - name: Commit kustomization.yaml to GitHub
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "log_output/manifests/kustomization.yaml"
+          message: "Update image tags for LogOutput components ${{ github.sha }}"
+        if: success()
