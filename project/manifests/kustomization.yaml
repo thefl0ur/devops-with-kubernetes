@@ -4,31 +4,31 @@ kind: Kustomization
 namespace: project
 
 resources:
-  - namespace.yaml
-  - db.yaml
-  - db_backup.yaml
-  - config_backend.yaml
-  - config_frontend.yaml
-  - deployment_backend.yaml
-  - deployment_frontend.yaml
-  - deployment_broadcaster.yaml
-  - service_backend.yaml
-  - service_frontend.yaml
-  - persistent_volume_claim.yml
-  - cronjob.yaml
-  - gateway.yml
-  - route.yml
+- namespace.yaml
+- db.yaml
+- db_backup.yaml
+- config_backend.yaml
+- config_frontend.yaml
+- deployment_backend.yaml
+- deployment_frontend.yaml
+- deployment_broadcaster.yaml
+- service_backend.yaml
+- service_frontend.yaml
+- persistent_volume_claim.yml
+- cronjob.yaml
+- gateway.yml
+- route.yml
 
 images:
-  - name: azska/dvk_project_backend
-    newName: azska/dvk_project_backend
-    newTag: "4.6"
-  - name: azska/dvk_project_frontend
-    newName: azska/dvk_project_frontend
-    newTag: "4.5"
-  - name: azska/dvk_project_cronjob
-    newName: azska/dvk_project_cronjob
-    newTag: latest
-  - name: azska/dvk_project_broadcaster
-    newName: azska/dvk_project_broadcaster
-    newTag: "4.6"
+- name: azska/dvk_project_backend
+  newName: azska/dvk_project_backend
+  newTag: "4.6"
+- name: azska/dvk_project_broadcaster
+  newName: azska/dvk_project_broadcaster
+  newTag: 0e646e220338c60768429f9e588f0b1658a513e1
+- name: azska/dvk_project_cronjob
+  newName: azska/dvk_project_cronjob
+  newTag: latest
+- name: azska/dvk_project_frontend
+  newName: azska/dvk_project_frontend
+  newTag: "4.5"
