@@ -157,3 +157,8 @@ Each exercise had release and a tag that matches the exercise number.
   https://github.com/thefl0ur/devops-with-kubernetes/raw/refs/heads/master/exersice_4_6_demo.mp4
 
 </details>
+
+
+[4.7. Baby steps to GitOps](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.7)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/4.7/log_output)
