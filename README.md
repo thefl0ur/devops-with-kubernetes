@@ -170,3 +170,9 @@ Each exercise had release and a tag that matches the exercise number.
 [4.9. The project, step 25](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.9)
 
 [Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/4.9/project)
+
+[4.10. The project, the grande finale](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/4.10)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/4.10/project)
+
+[Repo with configs](https://github.com/thefl0ur/devops-with-kubernetes-configs/)
