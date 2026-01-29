@@ -182,3 +182,7 @@ Each exercise had release and a tag that matches the exercise number.
 [5.1. DIY CRD & Controller](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.1)
 
 [Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.1/dummy_site_crd)
+
+[5.2. Getting started with Istio service mesh](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.2)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.2/istio_sample)
