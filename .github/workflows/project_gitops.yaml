@@ -27,10 +27,18 @@ jobs:
     environment: dwk_gke
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v4
         with:
           ref: master
+
+      - name: Checkout config repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.CONFIG_REPO }}
+          ref: main
+          token: ${{ secrets.GIT_TOKEN }}
+          path: config-repo
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -54,50 +62,70 @@ jobs:
       - name: Detect changes and build images
         run: |
           git fetch origin master --depth=2
-          BASE_DIR=$(pwd)
+
+          echo "UPDATE_FRONTEND=false" >> $GITHUB_ENV
+          echo "UPDATE_BACKEND=false" >> $GITHUB_ENV
+          echo "UPDATE_CRONJOB=false" >> $GITHUB_ENV
+          echo "UPDATE_BROADCASTER=false" >> $GITHUB_ENV
 
           if git diff --name-only HEAD~1 HEAD | grep -qE "(project/todo_app/|project/Dockerfile\.frontend|project/pyproject\.toml)"; then
             echo "Building frontend image..."
             docker buildx build --file ./project/Dockerfile.frontend \
               --tag ${{ env.FRONTEND_IMAGE_TAG }} --push ./project
-            echo "Update kustomization"
-            cd project/manifests/overlays/${{ env.TARGET_OVERLAY }}
-            kustomize edit set image azska/dvk_project_frontend=${{ env.FRONTEND_IMAGE_TAG }}
-            cd $BASE_DIR
+            echo "UPDATE_FRONTEND=true" >> $GITHUB_ENV
           fi
 
           if git diff --name-only HEAD~1 HEAD | grep -qE "(project/todo_backend/|project/Dockerfile\.backend|project/pyproject\.toml)"; then
             echo "Building backend image..."
             docker buildx build --file ./project/Dockerfile.backend \
               --tag ${{ env.BACKEND_IMAGE_TAG }} --push ./project
-            echo "Update kustomization for backend"
-            cd project/manifests/overlays/${{ env.TARGET_OVERLAY }}
-            kustomize edit set image azska/dvk_project_backend=${{ env.BACKEND_IMAGE_TAG }}
-            cd $BASE_DIR
+            echo "UPDATE_BACKEND=true" >> $GITHUB_ENV
           fi
 
           if git diff --name-only HEAD~1 HEAD | grep -qE "(project/periodic_task/|project/Dockerfile\.cronjob|project/periodic_task/pyproject\.toml)"; then
             echo "Building cronjob image..."
             docker buildx build --file ./project/Dockerfile.cronjob \
               --tag ${{ env.CRONJOB_IMAGE_TAG }} --push ./project
-            echo "Update kustomization for cronjob"
-            cd project/manifests/overlays/${{ env.TARGET_OVERLAY }}
-            kustomize edit set image azska/dvk_project_cronjob=${{ env.CRONJOB_IMAGE_TAG }}
-            cd $BASE_DIR
+            echo "UPDATE_CRONJOB=true" >> $GITHUB_ENV
           fi
 
           if git diff --name-only HEAD~1 HEAD | grep -qE "(project/broadcaster/|project/Dockerfile\.broadcaster|project/pyproject\.toml)"; then
             echo "Building broadcaster image..."
             docker buildx build --file ./project/Dockerfile.broadcaster \
               --tag ${{ env.BROADCASTER_IMAGE_TAG }} --push ./project
-            echo "Update kustomization for broadcaster"
-            cd project/manifests/overlays/${{ env.TARGET_OVERLAY }}
-            kustomize edit set image azska/dvk_project_broadcaster=${{ env.BROADCASTER_IMAGE_TAG }}
-            cd $BASE_DIR
+            echo "UPDATE_BROADCASTER=true" >> $GITHUB_ENV
           fi
 
-      - name: Commit kustomization.yaml to GitHub
+      - name: Update config repository
+        run: |
+          cd config-repo
+          cd overlays/${{ env.TARGET_OVERLAY }}
+
+          if [ "${{ env.UPDATE_FRONTEND }}" = "true" ]; then
+            echo "Updating frontend image"
+            kustomize edit set image azska/dvk_project_frontend=${{ env.FRONTEND_IMAGE_TAG }}
+          fi
+
+          if [ "${{ env.UPDATE_BACKEND }}" = "true" ]; then
+            echo "Updating backend image"
+            kustomize edit set image azska/dvk_project_backend=${{ env.BACKEND_IMAGE_TAG }}
+          fi
+
+          if [ "${{ env.UPDATE_CRONJOB }}" = "true" ]; then
+            echo "Updating cronjob image"
+            kustomize edit set image azska/dvk_project_cronjob=${{ env.CRONJOB_IMAGE_TAG }}
+          fi
+
+          if [ "${{ env.UPDATE_BROADCASTER }}" = "true" ]; then
+            echo "Updating broadcaster image"
+            kustomize edit set image azska/dvk_project_broadcaster=${{ env.BROADCASTER_IMAGE_TAG }}
+          fi
+
+      - name: Commit kustomization.yaml to config repository
         uses: EndBug/add-and-commit@v9
         with:
-          add: "project/manifests/overlays/${{ env.TARGET_OVERLAY }}/kustomization.yaml"
+          cwd: config-repo
+          add: "overlays/${{ env.TARGET_OVERLAY }}/kustomization.yaml"
           message: "Update staging image tags for Project components ${{ github.sha }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
