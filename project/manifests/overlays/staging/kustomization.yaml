@@ -7,8 +7,8 @@ resources:
 namespace: staging
 
 patches:
-  - path: cronjob-patch.yaml
-  - path: broadcaster-patch.yaml
+- path: cronjob-patch.yaml
+- path: broadcaster-patch.yaml
 
 images:
 - name: azska/dvk_project_backend
@@ -16,7 +16,7 @@ images:
   newTag: "4.6"
 - name: azska/dvk_project_broadcaster
   newName: azska/dvk_project_broadcaster
-  newTag: 0e646e220338c60768429f9e588f0b1658a513e1
+  newTag: 1e620b687b527c2199e3e4820de14c9db6348b14
 - name: azska/dvk_project_cronjob
   newName: azska/dvk_project_cronjob
   newTag: latest
