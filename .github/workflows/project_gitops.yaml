@@ -100,4 +100,4 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           add: "project/manifests/overlays/${{ env.TARGET_OVERLAY }}/kustomization.yaml"
-          message: "Update image tags for Project components ${{ github.sha }}"
+          message: "Update staging image tags for Project components ${{ github.sha }}"
