@@ -36,9 +36,6 @@ class NatsPublisher:
         }
 
         try:
-            await self.nc.publish(
-                "todo.events",
-                json.dumps(payload).encode()
-            )
+            await self.nc.publish("todo.events", json.dumps(payload).encode())
         except Exception:
             logger.exception(f"Failed to publish {event_type} event")
