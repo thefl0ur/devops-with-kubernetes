@@ -28,8 +28,8 @@ async def handle_message(msg):
         "item": {
             "id": data["todo"]["id"],
             "text": data["todo"]["text"],
-            "is_completed": data["todo"]["is_complete"]
-        }
+            "is_completed": data["todo"]["is_complete"],
+        },
     }
 
     logger.info(payload)
