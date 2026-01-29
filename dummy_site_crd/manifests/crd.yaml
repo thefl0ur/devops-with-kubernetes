@@ -1,0 +1,34 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: dummiesites.stable.dwk
+spec:
+  group: stable.dwk
+  scope: Namespaced
+  names:
+    kind: DummySite
+    plural: dummiesites
+    singular: dummysite
+    shortNames:
+    - ds
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                website_url:
+                  type: string
+                  pattern: "^https?://.+$"
+              required:
+                - website_url
+      additionalPrinterColumns:
+        - name: Website_URL
+          type: string
+          description: The URL of the dummy site
+          jsonPath: .spec.website_url

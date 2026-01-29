@@ -176,3 +176,9 @@ Each exercise had release and a tag that matches the exercise number.
 [Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/4.10/project)
 
 [Repo with configs](https://github.com/thefl0ur/devops-with-kubernetes-configs/)
+
+### Chapter 5
+
+[5.1. DIY CRD & Controller](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.1)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.1/dummy_site_crd)

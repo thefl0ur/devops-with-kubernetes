@@ -1,2 +1,4 @@
 .vscode/
 private-key.json
+dummy_site_crd/.venv
+*.pyc
