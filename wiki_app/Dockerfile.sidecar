@@ -1,0 +1,8 @@
+FROM alpine:latest
+
+RUN apk add --no-cache curl jq
+
+COPY sidecar.sh /sidecar.sh
+RUN chmod +x /sidecar.sh
+
+CMD ["/sidecar.sh"]
