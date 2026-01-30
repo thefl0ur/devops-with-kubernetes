@@ -6,6 +6,7 @@ metadata:
 data:
   MESSAGE: Hello world!
   ping_pong_url: "http://ping-pong-service.exercises:80"
+  greeter_url: "http://greeter-service.exercises:80"
   file_path: "/tmp/share.md"
   configurated_file: "/opt/information.txt"
   information.txt: |

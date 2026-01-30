@@ -186,3 +186,7 @@ Each exercise had release and a tag that matches the exercise number.
 [5.2. Getting started with Istio service mesh](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.2)
 
 [Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.2/istio_sample)
+
+[5.3. Log app, the Service Mesh Edition](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.3)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.3/greeter)

@@ -15,4 +15,4 @@ images:
   newTag: "1.10"
 - name: azska/log_output_server
   newName: azska/log_output_server
-  newTag: 705af37d545c9d2f9b698315852d4f76a45d3d64
+  newTag: 5.3.1
