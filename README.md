@@ -223,3 +223,60 @@ Skip, do not have enough resources to run Knative on local machine
 [5.7. Deploy to serverless](#)
 
 Skip, do not have enough resources to run Knative on local machine
+
+[5.8 Landscape](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.8)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.8/)
+
+<details>
+  <summary>CNCF Cloud Native Landscape Technologies</summary> 
+
+### Application Definition & Image Build
+- **Docker**: Used for application containerization
+- **Helm**: Used for installing Prometheus, NATS, and other components
+- **Docker Compose**: Used for local testing
+- **OpenAPI**: Used outside of the course
+
+### Continuous Integration & Delivery
+- **Argo**: Used in exercises 4.7–4.10
+- **GitLab**: Used outside of the course
+
+### Database
+- **PostgreSQL**: Used as the primary application database
+- **Microsoft SQL Server, MongoDB, Qdrant, Redis**: Used outside of the course
+
+### Streaming & Messaging
+- **NATS**: Used within the course
+- **Apache Spark, RabbitMQ**: Used outside of the course
+
+### Scheduling & Orchestration
+- **Kubernetes**: Primary orchestration platform
+
+### Service Mesh
+- **Istio**: Used within the course
+
+### API Gateway
+- **Traefik**: Used within the course
+- **KubeGateway**: Used within the course
+
+### Coordination & Service Discovery
+- **etcd**: Used indirectly via Kubernetes
+
+### Cloud Native Storage
+- **Google Persistent Disk**: Used as part of GKE
+
+### Container Runtime
+- **containerd**: Used as the base for Docker
+
+### Container Registry
+- **Google Container Registry**: Used within the course
+- **Harbor**: Used outside of the course
+
+### Observability
+- **Prometheus, Grafana, Grafana Loki**: Used within the course
+- **Sentry**: Used outside of the course
+
+</details>
+
+
+
