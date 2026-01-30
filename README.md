@@ -215,3 +215,11 @@ DigitalOcean Kubernetes is better suited for small to mid-sized teams, startups,
 * Upstream Kubernetes: DOKS provides a pure Kubernetes experience that stays close to the open-source upstream. GKE often relies on proprietary features that can lead to vendor lock-in and make it harder to migrate workloads to other environments later.
 
 </details>
+
+[5.6. Trying serverless](#)
+
+Skip, do not have enough resources to run Knative on local machine
+
+[5.7. Deploy to serverless](#)
+
+Skip, do not have enough resources to run Knative on local machine
