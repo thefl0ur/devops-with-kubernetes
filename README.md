@@ -194,3 +194,24 @@ Each exercise had release and a tag that matches the exercise number.
 [5.4. Wikipedia with init and sidecar](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.4)
 
 [Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.4/wiki_app)
+
+[5.5. Platform comparison](https://github.com/thefl0ur/devops-with-kubernetes/releases/tag/5.5)
+
+[Repo state](https://github.com/thefl0ur/devops-with-kubernetes/tree/5.5/)
+
+In this exercise we need to compare two Kubernetes service providers.
+
+<details>
+  <summary>Platform comparison</summary> 
+
+I deside to compare DigitalOcean Kubernetes (DOKS) and Google Kubernetes Engine (GKE) and take side of DOKS.
+
+DigitalOcean Kubernetes is better suited for small to mid-sized teams, startups, and individual developers who prioritize simplicity, fast setup, and predictable costs.
+
+* Cost Predictability: DigitalOcean offers the Kubernetes Control Plane for free, while GKE charges a fee of $0.10/hour per cluster.
+
+* Complexity: GKE requires knowledge of Google Cloud IAM, VPCs, and Project-level permissions before a cluster is even functional. DOKS abstracts this complexity, allowing developers to spin up a cluster in minutes with zero pre-configuration of the underlying cloud network.
+
+* Upstream Kubernetes: DOKS provides a pure Kubernetes experience that stays close to the open-source upstream. GKE often relies on proprietary features that can lead to vendor lock-in and make it harder to migrate workloads to other environments later.
+
+</details>
